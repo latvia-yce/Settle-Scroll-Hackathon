@@ -1,6 +1,6 @@
 // pages/Landing.jsx
 import React, { useState } from 'react';
-import ConnectWalletModal from '../components/ConnectWalletModal';
+import ConnectWallet from '../components/ConnectWallet';
 
 function Landing() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -261,10 +261,21 @@ function Landing() {
           </footer>
 
           {/* Connect Wallet Modal */}
-          <ConnectWalletModal 
-            isOpen={isModalOpen} 
-            onClose={() => setIsModalOpen(false)} 
-          />
+          <div className={`fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm ${isModalOpen ? '' : 'hidden'}`}>
+            <div className="relative z-10 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+              <div className="bg-background-dark border border-white/10 rounded-xl p-6 shadow-2xl relative overflow-hidden">
+                {/* Close Button */}
+                <button
+                  onClick={() => setIsModalOpen(false)}
+                  className="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors z-20"
+                >
+                  <span className="material-symbols-outlined">close</span>
+                </button>
+                
+                <ConnectWallet isModal={true} />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

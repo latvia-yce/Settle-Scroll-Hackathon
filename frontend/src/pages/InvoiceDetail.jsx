@@ -2,12 +2,20 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import DashboardLayout from '../components/Layout/DashboardLayout';
+import { useWeb3 } from '../hooks/useWeb3';
+import { useInvoice } from '../hooks/useWeb3';
+import { useAccountAbstraction } from '../hooks/useAccountAbstraction';
 
 function InvoiceDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { isConnected, account, isCorrectNetwork } = useWeb3();
+  const { payInvoice, loading: paymentLoading } = useInvoice();
+  const { payInvoiceGasless, canPerformGaslessTx } = useAccountAbstraction();
+
   const [invoice, setInvoice] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [paying, setPaying] = useState(false);
 
   // Mock invoice data - in a real app, you would fetch this from an API
   const mockInvoices = {
@@ -74,6 +82,45 @@ function InvoiceDetail() {
       setLoading(false);
     }, 300);
   }, [id]);
+
+  const handlePayment = async () => {
+    if (!isConnected) {
+      alert('Please connect your wallet first');
+      return;
+    }
+
+    if (!isCorrectNetwork) {
+      alert('Please switch to Scroll Sepolia network');
+      return;
+    }
+
+    setPaying(true);
+    try {
+      const paymentAmount = invoice.amount.toString();
+
+      let result;
+      if (canPerformGaslessTx()) {
+        result = await payInvoiceGasless(id, paymentAmount);
+      } else {
+        result = await payInvoice(id, paymentAmount);
+      }
+
+      if (result.success) {
+        // Update invoice status to paid
+        setInvoice(prev => ({ ...prev, status: 'Paid' }));
+        alert('Payment successful!');
+        // Navigate to success page or refresh
+        navigate('/success');
+      } else {
+        alert('Payment failed: ' + result.error);
+      }
+    } catch (error) {
+      console.error('Payment error:', error);
+      alert('Payment failed: ' + error.message);
+    } finally {
+      setPaying(false);
+    }
+  };
 
   const copyToClipboard = (text) => {
     navigator.clipboard.writeText(text);
@@ -151,14 +198,14 @@ function InvoiceDetail() {
           </div>
         </header>
         
-        <div className="flex-1 p-8 max-w-7xl mx-auto w-full flex flex-col gap-6">
+        <div className="flex-1 p-6 max-w-6xl mx-auto w-full flex flex-col gap-5">
           {/* Breadcrumb */}
           <div className="flex items-center gap-2 text-sm text-gray-500">
-            <Link 
-              to="/invoices" 
+            <Link
+              to="/invoices"
               className="hover:text-primary transition-colors flex items-center gap-1 font-medium"
             >
-              <span className="material-symbols-outlined text-[18px]">arrow_back</span> Back to Invoices
+              <span className="material-symbols-outlined text-[16px]">arrow_back</span> Back to Invoices
             </Link>
             <span className="text-gray-700 dark:text-gray-600">/</span>
             <span className="text-gray-900 dark:text-white font-medium">{invoice.id}</span>
@@ -324,9 +371,27 @@ function InvoiceDetail() {
                   <div className="flex flex-col gap-3 mt-2">
                     {invoice.status === 'Pending' ? (
                       <>
-                        <button className="group w-full flex items-center justify-center gap-2 bg-primary hover:bg-green-500 text-white px-4 py-3.5 rounded-lg font-bold transition-all shadow-[0_0_20px_rgba(15,184,71,0.2)] hover:shadow-[0_0_30px_rgba(15,184,71,0.4)] hover:-translate-y-0.5">
-                          <span className="material-symbols-outlined group-hover:animate-bounce">send</span>
-                          Remind Client
+                        <button
+                          onClick={handlePayment}
+                          disabled={paying || !isConnected}
+                          className="group w-full flex items-center justify-center gap-2 bg-primary hover:bg-green-500 disabled:bg-gray-600 disabled:cursor-not-allowed text-white px-4 py-3.5 rounded-lg font-bold transition-all shadow-[0_0_20px_rgba(15,184,71,0.2)] hover:shadow-[0_0_30px_rgba(15,184,71,0.4)] hover:-translate-y-0.5"
+                        >
+                          {paying ? (
+                            <>
+                              <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+                              <span>Processing Payment...</span>
+                            </>
+                          ) : !isConnected ? (
+                            <>
+                              <span className="material-symbols-outlined">account_balance_wallet</span>
+                              <span>Connect Wallet to Pay</span>
+                            </>
+                          ) : (
+                            <>
+                              <span className="material-symbols-outlined group-hover:animate-bounce">send</span>
+                              <span>Pay Invoice</span>
+                            </>
+                          )}
                         </button>
                         <button className="w-full flex items-center justify-center gap-2 bg-white/5 hover:bg-white/10 text-white px-4 py-3.5 rounded-lg font-medium border border-white/10 transition-colors">
                           <span className="material-symbols-outlined">check_circle</span>

@@ -6,12 +6,47 @@ import DashboardHeader from '../components/dashboard/DashboardHeader';
 
 function Invoices() {
   const navigate = useNavigate();
-  const [invoices] = useState([
-    { id: 'INV-2024-001', client: 'Client A', amount: '$500.00', date: 'Oct 24, 2024', status: 'Paid' },
-    { id: 'INV-2024-002', client: 'Client B', amount: '$750.00', date: 'Oct 23, 2024', status: 'Pending' },
-    { id: 'INV-2024-003', client: 'Client C', amount: '$1,200.00', date: 'Oct 22, 2024', status: 'Paid' },
-    { id: 'INV-2024-004', client: 'Client D', amount: '$350.00', date: 'Oct 21, 2024', status: 'Overdue' },
-  ]);
+  const { isConnected, account } = useWeb3();
+  const { getFreelancerInvoices, getClientInvoices, loading } = useInvoice();
+
+  const [invoices, setInvoices] = useState([]);
+  const [loadingInvoices, setLoadingInvoices] = useState(false);
+  const [activeTab, setActiveTab] = useState('freelancer'); // 'freelancer' or 'client'
+
+  // Load invoices based on active tab
+  React.useEffect(() => {
+    const loadInvoices = async () => {
+      if (!isConnected || !account) return;
+
+      setLoadingInvoices(true);
+      try {
+        let result;
+        if (activeTab === 'freelancer') {
+          result = await getFreelancerInvoices(account);
+        } else {
+          result = await getClientInvoices(account);
+        }
+
+        if (result.success) {
+          // Transform invoice IDs to invoice objects (this would need actual contract calls)
+          const transformedInvoices = result.invoiceIds.map((id, index) => ({
+            id: id.toString(),
+            client: activeTab === 'freelancer' ? 'Client ' + (index + 1) : 'You',
+            amount: '$0.00', // Would need to fetch actual amount
+            date: new Date().toLocaleDateString(),
+            status: 'Pending', // Would need to fetch actual status
+          }));
+          setInvoices(transformedInvoices);
+        }
+      } catch (error) {
+        console.error('Failed to load invoices:', error);
+      } finally {
+        setLoadingInvoices(false);
+      }
+    };
+
+    loadInvoices();
+  }, [isConnected, account, activeTab, getFreelancerInvoices, getClientInvoices]);
 
   const handleCreateInvoice = () => {
     navigate('/create-invoice');
@@ -44,9 +79,9 @@ function Invoices() {
       <main className="flex-1 flex flex-col h-full relative overflow-y-auto">
         <DashboardHeader />
         
-        <div className="flex-1 p-8 max-w-7xl mx-auto w-full">
-          <div className="flex items-center justify-between mb-6">
-            <h1 className="text-2xl font-bold text-white">Invoices</h1>
+        <div className="flex-1 p-6 max-w-6xl mx-auto w-full">
+          <div className="flex items-center justify-between mb-5">
+            <h1 className="text-xl font-bold text-white">Invoices</h1>
             <button 
               onClick={handleCreateInvoice}
               className="bg-primary hover:bg-green-500 text-white px-4 py-2 rounded-lg font-medium flex items-center gap-2 transition-colors"
@@ -108,21 +143,49 @@ function Invoices() {
               </table>
             </div>
             
+            {/* Loading State */}
+            {loadingInvoices && (
+              <div className="p-12 text-center">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
+                <p className="text-gray-400 text-sm">Loading invoices...</p>
+              </div>
+            )}
+
             {/* Empty State */}
-            {invoices.length === 0 && (
+            {!loadingInvoices && invoices.length === 0 && isConnected && (
               <div className="p-12 text-center">
                 <div className="h-16 w-16 rounded-full bg-white/5 flex items-center justify-center mx-auto mb-4">
                   <span className="material-symbols-outlined text-gray-400 text-2xl">description</span>
                 </div>
-                <h3 className="text-white text-lg font-medium mb-2">No invoices yet</h3>
-                <p className="text-gray-400 text-sm mb-6">Create your first invoice to get started</p>
-                <button 
-                  onClick={handleCreateInvoice}
-                  className="bg-primary hover:bg-green-500 text-white px-6 py-3 rounded-lg font-medium flex items-center gap-2 mx-auto"
-                >
-                  <span className="material-symbols-outlined">add</span>
-                  Create Your First Invoice
-                </button>
+                <h3 className="text-white text-lg font-medium mb-2">
+                  {activeTab === 'freelancer' ? 'No invoices sent yet' : 'No invoices received yet'}
+                </h3>
+                <p className="text-gray-400 text-sm mb-6">
+                  {activeTab === 'freelancer'
+                    ? 'Create your first invoice to get started'
+                    : 'Invoices sent to you will appear here'
+                  }
+                </p>
+                {activeTab === 'freelancer' && (
+                  <button
+                    onClick={handleCreateInvoice}
+                    className="bg-primary hover:bg-green-500 text-white px-6 py-3 rounded-lg font-medium flex items-center gap-2 mx-auto"
+                  >
+                    <span className="material-symbols-outlined">add</span>
+                    Create Your First Invoice
+                  </button>
+                )}
+              </div>
+            )}
+
+            {/* Not Connected State */}
+            {!isConnected && !loadingInvoices && (
+              <div className="p-12 text-center">
+                <div className="h-16 w-16 rounded-full bg-white/5 flex items-center justify-center mx-auto mb-4">
+                  <span className="material-symbols-outlined text-gray-400 text-2xl">account_balance_wallet</span>
+                </div>
+                <h3 className="text-white text-lg font-medium mb-2">Connect Your Wallet</h3>
+                <p className="text-gray-400 text-sm">Connect your wallet to view and manage your invoices</p>
               </div>
             )}
           </div>

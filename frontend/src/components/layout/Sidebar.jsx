@@ -12,15 +12,15 @@ const Sidebar = () => {
   ];
   
   return (
-    <aside className="w-72 bg-white dark:bg-background-dark border-r border-gray-200 dark:border-white/5 flex flex-col justify-between shrink-0 h-full relative z-20">
-      <div className="flex flex-col gap-8 p-6">
+    <aside className="w-64 bg-white dark:bg-background-dark border-r border-gray-200 dark:border-white/5 flex flex-col justify-between shrink-0 h-full relative z-20">
+      <div className="flex flex-col gap-6 p-5">
         {/* Logo */}
         <div className="flex flex-col gap-1">
           <div className="flex items-center gap-2">
-            <span className="material-symbols-outlined text-primary" style={{ fontSize: '28px' }}>bolt</span>
-            <h1 className="text-xl font-bold tracking-tight">Settle</h1>
+            <span className="material-symbols-outlined text-primary" style={{ fontSize: '24px' }}>bolt</span>
+            <h1 className="text-lg font-bold tracking-tight">Settle</h1>
           </div>
-          <p className="text-gray-500 dark:text-gray-400 text-xs font-medium pl-9">Settle Payments</p>
+          <p className="text-gray-500 dark:text-gray-400 text-xs font-medium pl-8">Settle Payments</p>
         </div>
         
         {/* Navigation */}
@@ -53,7 +53,7 @@ const Sidebar = () => {
       </div>
       
       {/* Bottom Section */}
-      <div className="p-6 flex flex-col gap-6">
+      <div className="p-5 flex flex-col gap-4">
         {/* Security Badge */}
         <div className="rounded-xl bg-gradient-to-br from-background-dark to-black border border-white/10 p-4 relative overflow-hidden group">
           <div className="absolute top-0 right-0 p-2 opacity-10 group-hover:opacity-20 transition-opacity">

@@ -58,9 +58,9 @@ const RecentActivity = () => {
   };
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-3">
       <div className="flex items-center justify-between">
-        <h3 className="text-xl font-bold text-white">Recent Activity</h3>
+        <h3 className="text-lg font-bold text-white">Recent Activity</h3>
         <button 
           onClick={() => navigate('/invoices')}
           className="text-sm text-primary hover:text-green-400 font-medium transition-colors"
@@ -74,11 +74,11 @@ const RecentActivity = () => {
           <table className="w-full text-left border-collapse">
             <thead>
               <tr className="bg-white/5 border-b border-white/5 text-xs uppercase tracking-wider text-gray-400 font-medium">
-                <th className="px-6 py-4">Transaction</th>
-                <th className="px-6 py-4">Type</th>
-                <th className="px-6 py-4">Amount</th>
-                <th className="px-6 py-4">Gas Fee</th>
-                <th className="px-6 py-4 text-right">Status</th>
+                <th className="px-5 py-3">Transaction</th>
+                <th className="px-5 py-3">Type</th>
+                <th className="px-5 py-3">Amount</th>
+                <th className="px-5 py-3">Gas Fee</th>
+                <th className="px-5 py-3 text-right">Status</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-white/5">
@@ -88,10 +88,10 @@ const RecentActivity = () => {
                   onClick={() => handleRowClick(activity.id)}
                   className="hover:bg-white/5 transition-colors group cursor-pointer"
                 >
-                  <td className="px-6 py-4">
+                  <td className="px-5 py-3">
                     <div className="flex items-center gap-3">
-                      <div className={`h-10 w-10 rounded-full ${activity.avatarColor} ${activity.avatarIconColor} flex items-center justify-center border ${activity.avatarColor.replace('/20', '/20')}`}>
-                        <span className="material-symbols-outlined text-sm">{activity.avatarIcon}</span>
+                      <div className={`h-8 w-8 rounded-full ${activity.avatarColor} ${activity.avatarIconColor} flex items-center justify-center border ${activity.avatarColor.replace('/20', '/20')}`}>
+                        <span className="material-symbols-outlined text-xs">{activity.avatarIcon}</span>
                       </div>
                       <div className="flex flex-col">
                         <span className="text-white font-medium text-sm">{activity.name}</span>
@@ -99,22 +99,22 @@ const RecentActivity = () => {
                       </div>
                     </div>
                   </td>
-                  <td className="px-6 py-4">
-                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-white/5 text-gray-300 text-xs font-medium border border-white/5">
-                      <span className="material-symbols-outlined text-[14px]">{activity.typeIcon}</span> {activity.type}
+                  <td className="px-5 py-3">
+                    <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-white/5 text-gray-300 text-xs font-medium border border-white/5">
+                      <span className="material-symbols-outlined text-[12px]">{activity.typeIcon}</span> {activity.type}
                     </span>
                   </td>
-                  <td className="px-6 py-4">
+                  <td className="px-5 py-3">
                     <span className="text-white font-semibold">{activity.amount}</span>
                   </td>
-                  <td className="px-6 py-4">
-                    <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full ${activity.gasFee.includes('FREE') ? 'bg-primary/10 text-primary border border-primary/20 shadow-[0_0_10px_rgba(15,184,71,0.1)]' : 'bg-white/5 text-gray-400 border border-white/10'} text-xs font-bold`}>
-                      <span className="material-symbols-outlined text-[14px]">{activity.gasIcon}</span> {activity.gasFee}
+                  <td className="px-5 py-3">
+                    <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full ${activity.gasFee.includes('FREE') ? 'bg-primary/10 text-primary border border-primary/20 shadow-[0_0_10px_rgba(15,184,71,0.1)]' : 'bg-white/5 text-gray-400 border border-white/10'} text-xs font-bold`}>
+                      <span className="material-symbols-outlined text-[12px]">{activity.gasIcon}</span> {activity.gasFee}
                     </span>
                   </td>
-                  <td className="px-6 py-4 text-right">
-                    <span className="text-primary text-sm font-medium flex items-center justify-end gap-1">
-                      {activity.status} <span className="material-symbols-outlined text-[16px]">check_circle</span>
+                  <td className="px-5 py-3 text-right">
+                    <span className="text-primary text-xs font-medium flex items-center justify-end gap-1">
+                      {activity.status} <span className="material-symbols-outlined text-[14px]">check_circle</span>
                     </span>
                   </td>
                 </tr>

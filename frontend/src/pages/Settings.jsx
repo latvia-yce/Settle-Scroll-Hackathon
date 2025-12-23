@@ -2,6 +2,9 @@
 import React, { useState } from 'react';
 import DashboardLayout from '../components/Layout/DashboardLayout';
 import DashboardHeader from '../components/dashboard/DashboardHeader';
+import ConnectWallet from '../components/ConnectWallet';
+import { useWeb3 } from '../hooks/useWeb3';
+import { useAccountAbstraction } from '../hooks/useAccountAbstraction';
 
 function Settings() {
   const [profileData, setProfileData] = useState({
@@ -258,23 +261,62 @@ function Settings() {
                   <p className="text-xs font-medium text-gray-400 uppercase tracking-wider mb-3">
                     Connected Wallet
                   </p>
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className="h-8 w-8 rounded-full bg-white/10 flex items-center justify-center">
-                        <span className="material-symbols-outlined text-primary text-sm">account_balance_wallet</span>
+                  {isConnected ? (
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          <div className="h-8 w-8 rounded-full bg-white/10 flex items-center justify-center">
+                            <span className="material-symbols-outlined text-primary text-sm">account_balance_wallet</span>
+                          </div>
+                          <div className="flex flex-col">
+                            <span className="text-sm font-bold text-white">
+                              {network?.name || 'Unknown Network'}
+                            </span>
+                            <span className="text-xs text-gray-500 font-mono">
+                              {account ? `${account.slice(0, 6)}...${account.slice(-4)}` : 'No account'}
+                            </span>
+                          </div>
+                        </div>
+                        <button
+                          onClick={disconnectWallet}
+                          className="text-xs bg-red-500/10 text-red-500 hover:bg-red-500/20 px-3 py-1.5 rounded-md transition-colors font-medium"
+                        >
+                          Disconnect
+                        </button>
                       </div>
-                      <div className="flex flex-col">
-                        <span className="text-sm font-bold text-white">Scroll Mainnet</span>
-                        <span className="text-xs text-gray-500 font-mono">0x71C...92F1</span>
-                      </div>
+
+                      {/* Smart Account Info */}
+                      {smartAccountAddress && (
+                        <div className="border-t border-white/5 pt-3">
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-3">
+                              <div className="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center">
+                                <span className="material-symbols-outlined text-primary text-xs">smart_toy</span>
+                              </div>
+                              <div className="flex flex-col">
+                                <span className="text-xs font-bold text-white">Smart Account</span>
+                                <span className="text-xs text-gray-500 font-mono">
+                                  {smartAccountAddress.slice(0, 6)}...{smartAccountAddress.slice(-4)}
+                                </span>
+                              </div>
+                            </div>
+                            <span className={`px-2 py-1 text-xs font-medium rounded-full ${
+                              isSmartAccountDeployed
+                                ? 'bg-green-100 text-green-800'
+                                : 'bg-yellow-100 text-yellow-800'
+                            }`}>
+                              {isSmartAccountDeployed ? 'Deployed' : 'Not Deployed'}
+                            </span>
+                          </div>
+                        </div>
+                      )}
                     </div>
-                    <button 
-                      onClick={handleDisconnectWallet}
-                      className="text-xs bg-red-500/10 text-red-500 hover:bg-red-500/20 px-3 py-1.5 rounded-md transition-colors font-medium"
-                    >
-                      Disconnect
-                    </button>
-                  </div>
+                  ) : (
+                    <div className="text-center py-4">
+                      <p className="text-sm text-gray-500 mb-3">No wallet connected</p>
+                      <ConnectWallet />
+                    </div>
+                  )}
                 </div>
                 
                 {/* Change Password */}

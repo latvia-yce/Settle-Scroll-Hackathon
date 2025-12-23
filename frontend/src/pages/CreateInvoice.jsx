@@ -1,16 +1,62 @@
 // pages/CreateInvoice.jsx
 import React, { useState } from 'react';
+import { useWeb3 } from '../hooks/useWeb3';
+import { useInvoice } from '../hooks/useWeb3';
+import { useAccountAbstraction } from '../hooks/useAccountAbstraction';
 
 function CreateInvoice() {
+  const { isConnected, account, isCorrectNetwork } = useWeb3();
+  const { createInvoice, loading: invoiceLoading } = useInvoice();
+  const { createInvoiceGasless, canPerformGaslessTx } = useAccountAbstraction();
+
   const [clientName, setClientName] = useState('');
+  const [clientAddress, setClientAddress] = useState('');
   const [amount, setAmount] = useState('');
   const [serviceDescription, setServiceDescription] = useState('');
+  const [dueDate, setDueDate] = useState('');
   const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [invoiceId, setInvoiceId] = useState('');
+  const [useGasless, setUseGasless] = useState(true);
+  const [showWalletModal, setShowWalletModal] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle form submission here
-    setShowSuccessModal(true);
+
+    if (!isConnected) {
+      setShowWalletModal(true);
+      return;
+    }
+
+    if (!isCorrectNetwork) {
+      alert('Please switch to Scroll Sepolia network');
+      return;
+    }
+
+    if (!clientAddress || !amount || !serviceDescription || !dueDate) {
+      alert('Please fill in all required fields');
+      return;
+    }
+
+    try {
+      const dueDateTimestamp = Math.floor(new Date(dueDate).getTime() / 1000);
+
+      let result;
+      if (useGasless && canPerformGaslessTx()) {
+        result = await createInvoiceGasless(amount, clientAddress, serviceDescription, dueDateTimestamp);
+      } else {
+        result = await createInvoice(amount, clientAddress, serviceDescription, dueDateTimestamp);
+      }
+
+      if (result.success) {
+        setInvoiceId(result.invoiceId || 'inv-' + Math.random().toString(36).substr(2, 9));
+        setShowSuccessModal(true);
+      } else {
+        alert('Failed to create invoice: ' + result.error);
+      }
+    } catch (error) {
+      console.error('Error creating invoice:', error);
+      alert('Error creating invoice: ' + error.message);
+    }
   };
 
   const copyToClipboard = (text) => {
@@ -37,7 +83,7 @@ function CreateInvoice() {
           </div>
         </header>
 
-        <main className="flex-1 flex flex-col items-center justify-center p-4 py-12 relative">
+        <main className="flex-1 flex flex-col items-center justify-center p-6 py-8 relative">
           {/* Abstract Background Glows */}
           <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
             <img 
@@ -60,12 +106,24 @@ function CreateInvoice() {
                 {/* Client Name Field */}
                 <div className="flex flex-col gap-2">
                   <label className="text-sm font-medium text-gray-400">Client Name</label>
-                  <input 
-                    className="w-full bg-[#111] border border-[#333] rounded-lg px-4 py-3 text-white placeholder:text-[#555] focus:outline-none focus:border-[#0fb847] focus:ring-1 focus:ring-[#0fb847] transition-all" 
-                    placeholder="e.g., Kayaba Labs" 
+                  <input
+                    className="w-full bg-[#111] border border-[#333] rounded-lg px-4 py-3 text-white placeholder:text-[#555] focus:outline-none focus:border-[#0fb847] focus:ring-1 focus:ring-[#0fb847] transition-all"
+                    placeholder="e.g., Kayaba Labs"
                     type="text"
                     value={clientName}
                     onChange={(e) => setClientName(e.target.value)}
+                  />
+                </div>
+
+                {/* Client Address Field */}
+                <div className="flex flex-col gap-2">
+                  <label className="text-sm font-medium text-gray-400">Client Wallet Address</label>
+                  <input
+                    className="w-full bg-[#111] border border-[#333] rounded-lg px-4 py-3 text-white placeholder:text-[#555] focus:outline-none focus:border-[#0fb847] focus:ring-1 focus:ring-[#0fb847] transition-all font-mono"
+                    placeholder="0x..."
+                    type="text"
+                    value={clientAddress}
+                    onChange={(e) => setClientAddress(e.target.value)}
                   />
                 </div>
 
@@ -127,14 +185,29 @@ function CreateInvoice() {
                 <div className="h-px bg-[#222] w-full my-2"></div>
 
                 {/* Action Button */}
-                <button 
+                <button
                   type="submit"
-                  className="w-full bg-[#0fb847] hover:bg-[#0da03f] text-black font-bold text-base md:text-lg rounded-lg py-3.5 transition-all shadow-[0_0_20px_-8px_#0fb847] hover:shadow-[0_0_30px_-5px_#0fb847] flex items-center justify-center gap-2 group active:scale-[0.99]"
+                  disabled={invoiceLoading || !isConnected}
+                  className="w-full bg-[#0fb847] hover:bg-[#0da03f] disabled:bg-gray-600 disabled:cursor-not-allowed text-black font-bold text-base md:text-lg rounded-lg py-3.5 transition-all shadow-[0_0_20px_-8px_#0fb847] hover:shadow-[0_0_30px_-5px_#0fb847] flex items-center justify-center gap-2 group active:scale-[0.99]"
                 >
-                  <span>Generate Payment Link</span>
-                  <span className="material-symbols-outlined group-hover:translate-x-1 transition-transform">
-                    arrow_forward
-                  </span>
+                  {invoiceLoading ? (
+                    <>
+                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-black"></div>
+                      <span>Creating Invoice...</span>
+                    </>
+                  ) : !isConnected ? (
+                    <>
+                      <span>Connect Wallet to Create Invoice</span>
+                      <span className="material-symbols-outlined">account_balance_wallet</span>
+                    </>
+                  ) : (
+                    <>
+                      <span>Generate Payment Link</span>
+                      <span className="material-symbols-outlined group-hover:translate-x-1 transition-transform">
+                        arrow_forward
+                      </span>
+                    </>
+                  )}
                 </button>
               </form>
             </div>
