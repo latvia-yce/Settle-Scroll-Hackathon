@@ -1,11 +1,11 @@
 // pages/CreateInvoice.jsx
 import React, { useState } from 'react';
-import { useWeb3 } from '../hooks/useWeb3';
+import { useWeb3Context } from '../contexts/Web3Context';
 import { useInvoice } from '../hooks/useWeb3';
 import { useAccountAbstraction } from '../hooks/useAccountAbstraction';
 
 function CreateInvoice() {
-  const { isConnected, account, isCorrectNetwork } = useWeb3();
+  const { isConnected, account, isCorrectNetwork } = useWeb3Context();
   const { createInvoice, loading: invoiceLoading } = useInvoice();
   const { createInvoiceGasless, canPerformGaslessTx } = useAccountAbstraction();
 

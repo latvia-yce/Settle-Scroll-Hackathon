@@ -3,10 +3,12 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import DashboardLayout from '../components/Layout/DashboardLayout';
 import DashboardHeader from '../components/dashboard/DashboardHeader';
+import { useWeb3Context } from '../contexts/Web3Context';
+import { useInvoice } from '../hooks/useWeb3';
 
 function Invoices() {
   const navigate = useNavigate();
-  const { isConnected, account } = useWeb3();
+  const { isConnected, account } = useWeb3Context();
   const { getFreelancerInvoices, getClientInvoices, loading } = useInvoice();
 
   const [invoices, setInvoices] = useState([]);

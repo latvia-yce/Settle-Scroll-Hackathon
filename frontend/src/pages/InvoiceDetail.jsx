@@ -2,14 +2,14 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import DashboardLayout from '../components/Layout/DashboardLayout';
-import { useWeb3 } from '../hooks/useWeb3';
+import { useWeb3Context } from '../contexts/Web3Context';
 import { useInvoice } from '../hooks/useWeb3';
 import { useAccountAbstraction } from '../hooks/useAccountAbstraction';
 
 function InvoiceDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { isConnected, account, isCorrectNetwork } = useWeb3();
+  const { isConnected, account, isCorrectNetwork } = useWeb3Context();
   const { payInvoice, loading: paymentLoading } = useInvoice();
   const { payInvoiceGasless, canPerformGaslessTx } = useAccountAbstraction();
 

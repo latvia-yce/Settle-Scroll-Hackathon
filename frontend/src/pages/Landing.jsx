@@ -1,9 +1,12 @@
 // pages/Landing.jsx
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import ConnectWallet from '../components/ConnectWallet';
 
 function Landing() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const navigate = useNavigate();
 
   return (
     <div className="dark">
@@ -72,7 +75,7 @@ function Landing() {
                 
                 <div className="flex flex-wrap gap-4">
                   <button 
-                    onClick={() => setIsModalOpen(true)}
+                    onClick={() => navigate('/dashboard')}
                     className="flex h-12 items-center justify-center gap-2 rounded-lg bg-primary px-8 text-base font-bold text-black transition-transform hover:scale-105 hover:shadow-[0_0_20px_rgba(15,184,71,0.4)]"
                   >
                     <span>Launch App</span>

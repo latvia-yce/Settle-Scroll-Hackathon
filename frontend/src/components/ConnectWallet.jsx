@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useWeb3 } from '../hooks/useWeb3';
+import { useWeb3Context } from '../contexts/Web3Context';
 import { useFullAccountAbstraction } from '../hooks/useAccountAbstraction';
 
 const ConnectWallet = ({ isModal = false }) => {
@@ -13,7 +13,7 @@ const ConnectWallet = ({ isModal = false }) => {
     disconnectWallet,
     isCorrectNetwork,
     switchToScrollSepolia,
-  } = useWeb3();
+  } = useWeb3Context();
 
   const {
     user,

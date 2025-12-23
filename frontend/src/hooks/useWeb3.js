@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { web3Service } from '../services/web3Service';
+import { useWeb3Context } from '../contexts/Web3Context';
 
 // Web3 hook for basic functionality
 export const useWeb3 = () => {
@@ -143,7 +144,7 @@ export const useWeb3 = () => {
 
 // Hook for invoice operations
 export const useInvoice = () => {
-  const { web3Service, isConnected } = useWeb3();
+  const { web3Service, isConnected } = useWeb3Context();
   const [invoices, setInvoices] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -353,7 +354,7 @@ export const useInvoice = () => {
 
 // Hook for USDC token operations
 export const useUSDC = () => {
-  const { web3Service, isConnected } = useWeb3();
+  const { web3Service } = useWeb3Context();
   const [balance, setBalance] = useState(null);
   const [tokenInfo, setTokenInfo] = useState(null);
   const [loading, setLoading] = useState(false);

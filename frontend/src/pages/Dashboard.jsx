@@ -4,11 +4,10 @@ import DashboardLayout from '../components/Layout/DashboardLayout';
 import DashboardHeader from '../components/dashboard/DashboardHeader';
 import BalanceCards from '../components/dashboard/BalanceCards';
 import RecentActivity from '../components/dashboard/RecentActivity';
-import ConnectWallet from '../components/ConnectWallet';
-import { useWeb3 } from '../hooks/useWeb3';
+import { useWeb3Context } from '../contexts/Web3Context';
 
 function Dashboard() {
-  const { isConnected, account } = useWeb3();
+  const { isConnected, account } = useWeb3Context();
 
   return (
     <DashboardLayout>
@@ -16,12 +15,7 @@ function Dashboard() {
         <DashboardHeader />
         
         <div className="flex-1 p-6 max-w-6xl mx-auto w-full flex flex-col gap-6">
-          {/* Wallet Status */}
-          <div className="flex justify-between items-center">
-            <h1 className="text-xl font-bold text-white">Dashboard</h1>
-            <ConnectWallet />
-          </div>
-          
+
           {isConnected && (
             <div className="bg-surface border border-white/10 rounded-xl p-4 mb-6">
               <div className="flex items-center gap-3">
