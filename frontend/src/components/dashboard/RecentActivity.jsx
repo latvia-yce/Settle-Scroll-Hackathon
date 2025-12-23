@@ -1,10 +1,13 @@
 // components/dashboard/RecentActivity.jsx
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const RecentActivity = () => {
+  const navigate = useNavigate();
+
   const activities = [
     {
-      id: 1,
+      id: 'INV-2024-004',
       avatarColor: 'bg-blue-500/20',
       avatarIconColor: 'text-blue-400',
       avatarIcon: 'person',
@@ -15,10 +18,11 @@ const RecentActivity = () => {
       amount: '$500.00 USDC',
       gasFee: 'FREE (Sponsored)',
       gasIcon: 'bolt',
-      status: 'Completed'
+      status: 'Completed',
+      amountValue: 500.00
     },
     {
-      id: 2,
+      id: 'INV-2024-005',
       avatarColor: 'bg-purple-500/20',
       avatarIconColor: 'text-purple-400',
       avatarIcon: 'business',
@@ -29,10 +33,11 @@ const RecentActivity = () => {
       amount: '$750.00 USDC',
       gasFee: 'FREE (Sponsored)',
       gasIcon: 'bolt',
-      status: 'Completed'
+      status: 'Completed',
+      amountValue: 750.00
     },
     {
-      id: 3,
+      id: 'INV-2024-006',
       avatarColor: 'bg-orange-500/20',
       avatarIconColor: 'text-orange-400',
       avatarIcon: 'shopping_cart',
@@ -43,17 +48,25 @@ const RecentActivity = () => {
       amount: '$29.00 USDC',
       gasFee: '$0.02',
       gasIcon: 'local_gas_station',
-      status: 'Completed'
+      status: 'Completed',
+      amountValue: 29.00
     }
   ];
+
+  const handleRowClick = (invoiceId) => {
+    navigate(`/invoices/${invoiceId}`);
+  };
 
   return (
     <div className="flex flex-col gap-4">
       <div className="flex items-center justify-between">
         <h3 className="text-xl font-bold text-white">Recent Activity</h3>
-        <a className="text-sm text-primary hover:text-green-400 font-medium transition-colors" href="#">
+        <button 
+          onClick={() => navigate('/invoices')}
+          className="text-sm text-primary hover:text-green-400 font-medium transition-colors"
+        >
           View All
-        </a>
+        </button>
       </div>
       
       <div className="rounded-xl border border-white/10 overflow-hidden bg-surface">
@@ -70,7 +83,11 @@ const RecentActivity = () => {
             </thead>
             <tbody className="divide-y divide-white/5">
               {activities.map((activity) => (
-                <tr key={activity.id} className="hover:bg-white/5 transition-colors group cursor-pointer">
+                <tr 
+                  key={activity.id}
+                  onClick={() => handleRowClick(activity.id)}
+                  className="hover:bg-white/5 transition-colors group cursor-pointer"
+                >
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-3">
                       <div className={`h-10 w-10 rounded-full ${activity.avatarColor} ${activity.avatarIconColor} flex items-center justify-center border ${activity.avatarColor.replace('/20', '/20')}`}>

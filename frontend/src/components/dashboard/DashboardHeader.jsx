@@ -1,14 +1,31 @@
 // components/dashboard/DashboardHeader.jsx
 import React from 'react';
+import { useLocation } from 'react-router-dom';
 
 const DashboardHeader = () => {
+  const location = useLocation();
+  
+  const getHeaderTitle = () => {
+    if (location.pathname === '/dashboard') return 'Welcome Back Munira 👋';
+    if (location.pathname === '/invoices') return 'Invoices';
+    if (location.pathname === '/settings') return 'Settings';
+    return 'Dashboard';
+  };
+
+  const getHeaderSubtitle = () => {
+    if (location.pathname === '/dashboard') return 'Scroll Mainnet';
+    if (location.pathname === '/invoices') return 'Manage your invoices';
+    if (location.pathname === '/settings') return 'Manage your account preferences';
+    return '';
+  };
+
   return (
     <header className="sticky top-0 z-10 bg-white/80 dark:bg-black/80 backdrop-blur-md border-b border-gray-200 dark:border-white/5 px-8 py-5 flex items-center justify-between">
       <div className="flex flex-col gap-1">
-        <h2 className="text-2xl font-bold tracking-tight">Welcome Back Munira 👋</h2>
+        <h2 className="text-2xl font-bold tracking-tight">{getHeaderTitle()}</h2>
         <div className="flex items-center gap-2">
           <div className="h-2 w-2 rounded-full bg-primary animate-pulse"></div>
-          <span className="text-xs font-medium text-gray-500 dark:text-gray-400">Scroll Mainnet</span>
+          <span className="text-xs font-medium text-gray-500 dark:text-gray-400">{getHeaderSubtitle()}</span>
         </div>
       </div>
       

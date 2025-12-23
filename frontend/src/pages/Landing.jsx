@@ -18,7 +18,7 @@ function Landing() {
                     <div className="flex size-8 items-center justify-center rounded-lg bg-primary/20 text-primary">
                       <span className="material-symbols-outlined" style={{ fontSize: '24px' }}>bolt</span>
                     </div>
-                    <h2 className="text-white text-lg font-bold leading-tight tracking-tight">Gasless</h2>
+                    <h2 className="text-white text-lg font-bold leading-tight tracking-tight">Settle</h2>
                   </div>
                   <nav className="hidden md:flex items-center gap-8">
                     <a className="text-gray-400 hover:text-white text-sm font-medium transition-colors" href="#">
@@ -256,7 +256,7 @@ function Landing() {
               </div>
             </div>
             <div className="mt-12 text-center">
-              <p className="text-xs text-gray-600">© 2024 Gasless Invoicing. All rights reserved.</p>
+              <p className="text-xs text-gray-600">© 2024 Settle Invoicing. All rights reserved.</p>
             </div>
           </footer>
 

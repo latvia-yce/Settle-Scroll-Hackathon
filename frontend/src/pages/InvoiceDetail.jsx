@@ -1,20 +1,155 @@
 // pages/InvoiceDetail.jsx
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import DashboardLayout from '../components/Layout/DashboardLayout';
-import InvoiceDetailHeader from '../components/invoices/InvoiceDetailHeader';
 
 function InvoiceDetail() {
-  const handleCopyLink = () => {
-    const link = "https://scroll.inv/pay/8x9s...";
-    navigator.clipboard.writeText(link);
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const [invoice, setInvoice] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  // Mock invoice data - in a real app, you would fetch this from an API
+  const mockInvoices = {
+    'INV-2024-001': {
+      id: 'INV-2024-001',
+      clientName: 'Client A',
+      clientEmail: 'client.a@example.com',
+      clientAddress: '123 Business Ave\nNew York, NY 10001',
+      amount: 500.00,
+      date: 'Oct 24, 2024',
+      serviceDescription: 'Web Development Services',
+      status: 'Paid',
+      items: [
+        { description: 'Website Development', hours: 10, rate: 50.00, amount: 500.00 }
+      ]
+    },
+    'INV-2024-002': {
+      id: 'INV-2024-002',
+      clientName: 'Client B',
+      clientEmail: 'client.b@example.com',
+      clientAddress: '456 Corporate Blvd\nSan Francisco, CA 94105',
+      amount: 750.00,
+      date: 'Oct 23, 2024',
+      serviceDescription: 'UI/UX Design Consultation',
+      status: 'Pending',
+      items: [
+        { description: 'UI/UX Design', hours: 15, rate: 50.00, amount: 750.00 }
+      ]
+    },
+    'INV-2024-003': {
+      id: 'INV-2024-003',
+      clientName: 'Client C',
+      clientEmail: 'client.c@example.com',
+      clientAddress: '789 Tech Street\nSeattle, WA 98101',
+      amount: 1200.00,
+      date: 'Oct 22, 2024',
+      serviceDescription: 'Full-stack Development Project',
+      status: 'Paid',
+      items: [
+        { description: 'Frontend Development', hours: 20, rate: 40.00, amount: 800.00 },
+        { description: 'Backend Development', hours: 10, rate: 40.00, amount: 400.00 }
+      ]
+    },
+    'INV-2024-004': {
+      id: 'INV-2024-004',
+      clientName: 'Client Corp',
+      clientEmail: 'billing@clientcorp.com',
+      clientAddress: '123 Innovation Drive\nTech City, TC 94043',
+      amount: 750.00,
+      date: 'Oct 24, 2024',
+      serviceDescription: 'Web Design Retainer - October\nUI/UX improvements and dashboard iteration',
+      status: 'Pending',
+      items: [
+        { description: 'Web Design Retainer - October', hours: 10, rate: 75.00, amount: 750.00 }
+      ]
+    }
+  };
+
+  useEffect(() => {
+    // Simulate API call
+    setTimeout(() => {
+      const foundInvoice = mockInvoices[id] || mockInvoices['INV-2024-004'];
+      setInvoice(foundInvoice);
+      setLoading(false);
+    }, 300);
+  }, [id]);
+
+  const copyToClipboard = (text) => {
+    navigator.clipboard.writeText(text);
     // You could add a toast notification here
   };
 
+  const getStatusColor = (status) => {
+    switch(status) {
+      case 'Paid': return 'bg-green-500/10 text-green-500';
+      case 'Pending': return 'bg-yellow-500/10 text-yellow-500';
+      case 'Overdue': return 'bg-red-500/10 text-red-500';
+      default: return 'bg-gray-500/10 text-gray-500';
+    }
+  };
+
+  if (loading) {
+    return (
+      <DashboardLayout>
+        <div className="flex-1 flex items-center justify-center">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary mx-auto"></div>
+            <p className="text-white mt-4">Loading invoice...</p>
+          </div>
+        </div>
+      </DashboardLayout>
+    );
+  }
+
+  if (!invoice) {
+    return (
+      <DashboardLayout>
+        <div className="flex-1 flex flex-col items-center justify-center p-8">
+          <div className="text-center">
+            <span className="material-symbols-outlined text-6xl text-gray-400 mb-4">error</span>
+            <h2 className="text-2xl font-bold text-white mb-2">Invoice Not Found</h2>
+            <p className="text-gray-400 mb-6">The invoice you're looking for doesn't exist.</p>
+            <Link 
+              to="/invoices" 
+              className="text-primary hover:text-green-400 font-medium transition-colors"
+            >
+              Return to Invoices
+            </Link>
+          </div>
+        </div>
+      </DashboardLayout>
+    );
+  }
+
   return (
     <DashboardLayout>
-      <main className="flex-1 flex flex-col h-full relative overflow-y-auto scrollbar-hide">
-        <InvoiceDetailHeader />
+      <main className="flex-1 flex flex-col h-full relative overflow-y-auto">
+        {/* Use the existing DashboardHeader */}
+        <header className="sticky top-0 z-10 bg-white/80 dark:bg-black/80 backdrop-blur-md border-b border-gray-200 dark:border-white/5 px-8 py-5 flex items-center justify-between">
+          <div className="flex flex-col gap-1">
+            <h2 className="text-2xl font-bold tracking-tight">Invoice Details</h2>
+            <div className="flex items-center gap-2">
+              <div className="h-2 w-2 rounded-full bg-primary animate-pulse"></div>
+              <span className="text-xs font-medium text-gray-500 dark:text-gray-400">Scroll Mainnet</span>
+            </div>
+          </div>
+          
+          <div className="flex items-center gap-4">
+            <button className="relative p-2 rounded-full text-gray-500 hover:bg-gray-100 dark:hover:bg-white/10 transition-colors">
+              <span className="material-symbols-outlined">notifications</span>
+              <div className="absolute top-2 right-2 h-2 w-2 bg-red-500 rounded-full border-2 border-black"></div>
+            </button>
+            
+            <div className="h-10 w-10 rounded-full bg-gray-200 dark:bg-surface overflow-hidden border border-white/10">
+              <img 
+                alt="User Avatar" 
+                className="h-full w-full object-cover" 
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuAeacGymUMH3-nk-dJf8IIQJblBD8tlqgylMEQXql_rj24-CqL-iTGhpVsohY1yy7dfAjAuGgoUq5mSGnbrRNRFm9zXuNrVxQJkZlqVMVysE8R5655Y2FmeQQ7TyTQAr8zgwc68RdEQdJeieFYt1iynhmPspIHoT_RmXMJrTi_SBtaM9Cfo4k6QRqNXy3yiIn5wr0jC2LVQ8QVwgL5KjngolI9IiBFEVMfUP_g6kWCr68XsJqBTEy54LP456QcFObfw3uq4yO9gCuFw"
+              />
+            </div>
+          </div>
+        </header>
         
         <div className="flex-1 p-8 max-w-7xl mx-auto w-full flex flex-col gap-6">
           {/* Breadcrumb */}
@@ -26,7 +161,7 @@ function InvoiceDetail() {
               <span className="material-symbols-outlined text-[18px]">arrow_back</span> Back to Invoices
             </Link>
             <span className="text-gray-700 dark:text-gray-600">/</span>
-            <span className="text-gray-900 dark:text-white font-medium">#INV-2024-004</span>
+            <span className="text-gray-900 dark:text-white font-medium">{invoice.id}</span>
           </div>
           
           {/* Main Content Grid */}
@@ -41,15 +176,15 @@ function InvoiceDetail() {
                 <div className="flex flex-col md:flex-row justify-between md:items-start gap-6">
                   <div className="flex flex-col gap-2">
                     <p className="text-primary text-xs font-bold tracking-widest uppercase">Invoice</p>
-                    <h1 className="text-4xl font-bold text-white tracking-tight">#INV-2024-004</h1>
+                    <h1 className="text-4xl font-bold text-white tracking-tight">{invoice.id}</h1>
                     <p className="text-gray-400 text-sm">
-                      Issued on <span className="text-white">Oct 24, 2024</span>
+                      Issued on <span className="text-white">{invoice.date}</span>
                     </p>
                   </div>
                   <div className="flex flex-col items-start md:items-end gap-1 bg-white/5 p-4 rounded-xl border border-white/5">
                     <span className="text-gray-400 text-xs font-medium uppercase tracking-wider">Total Amount</span>
                     <span className="text-2xl font-bold text-white">
-                      $750.00 <span className="text-sm text-gray-500">USDC</span>
+                      ${invoice.amount.toFixed(2)} <span className="text-sm text-gray-500">USDC</span>
                     </span>
                   </div>
                 </div>
@@ -66,16 +201,20 @@ function InvoiceDetail() {
                         <span className="material-symbols-outlined">business</span>
                       </div>
                       <div className="flex flex-col gap-1">
-                        <h3 className="text-white text-lg font-bold">Client Corp</h3>
+                        <h3 className="text-white text-lg font-bold">{invoice.clientName}</h3>
                         <a 
                           className="text-primary text-sm hover:underline" 
-                          href="mailto:billing@clientcorp.com"
+                          href={`mailto:${invoice.clientEmail}`}
                         >
-                          billing@clientcorp.com
+                          {invoice.clientEmail}
                         </a>
                         <p className="text-gray-500 text-sm leading-relaxed mt-1">
-                          123 Innovation Drive<br/>
-                          Tech City, TC 94043
+                          {invoice.clientAddress.split('\n').map((line, i) => (
+                            <React.Fragment key={i}>
+                              {line}
+                              {i < invoice.clientAddress.split('\n').length - 1 && <br />}
+                            </React.Fragment>
+                          ))}
                         </p>
                       </div>
                     </div>
@@ -117,24 +256,26 @@ function InvoiceDetail() {
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-white/5 text-sm">
-                        <tr>
-                          <td className="px-6 py-5 text-white font-medium">
-                            Web Design Retainer - October
-                            <div className="text-gray-500 text-xs font-normal mt-1">
-                              UI/UX improvements and dashboard iteration
-                            </div>
-                          </td>
-                          <td className="px-6 py-5 text-gray-400 text-right">10</td>
-                          <td className="px-6 py-5 text-gray-400 text-right">$75.00</td>
-                          <td className="px-6 py-5 text-white font-bold text-right">$750.00</td>
-                        </tr>
+                        {invoice.items.map((item, index) => (
+                          <tr key={index}>
+                            <td className="px-6 py-5 text-white font-medium">
+                              {item.description}
+                              <div className="text-gray-500 text-xs font-normal mt-1">
+                                {invoice.serviceDescription.split('\n')[index] || ''}
+                              </div>
+                            </td>
+                            <td className="px-6 py-5 text-gray-400 text-right">{item.hours}</td>
+                            <td className="px-6 py-5 text-gray-400 text-right">${item.rate.toFixed(2)}</td>
+                            <td className="px-6 py-5 text-white font-bold text-right">${item.amount.toFixed(2)}</td>
+                          </tr>
+                        ))}
                       </tbody>
                       <tfoot className="bg-white/5">
                         <tr>
                           <td className="px-6 py-4 text-right text-gray-400 text-xs uppercase font-bold tracking-wider" colSpan="3">
                             Total Due
                           </td>
-                          <td className="px-6 py-4 text-right text-white font-bold text-lg">$750.00</td>
+                          <td className="px-6 py-4 text-right text-white font-bold text-lg">${invoice.amount.toFixed(2)}</td>
                         </tr>
                       </tfoot>
                     </table>
@@ -147,34 +288,62 @@ function InvoiceDetail() {
             <div className="flex flex-col gap-6">
               {/* Payment Status Card */}
               <div className="rounded-2xl bg-background-dark border border-white/10 p-1 shadow-2xl relative overflow-hidden group">
-                <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/20 to-transparent opacity-50 group-hover:opacity-100 transition-opacity"></div>
+                <div className={`absolute inset-0 bg-gradient-to-br ${
+                  invoice.status === 'Paid' ? 'from-green-500/20' : 
+                  invoice.status === 'Pending' ? 'from-yellow-500/20' : 'from-red-500/20'
+                } to-transparent opacity-50 group-hover:opacity-100 transition-opacity`}></div>
                 <div className="relative bg-surface rounded-xl p-6 h-full flex flex-col gap-6 z-10">
-                  <div className="absolute top-0 right-0 w-[150px] h-[150px] bg-yellow-500/10 blur-[60px] rounded-full translate-x-1/2 -translate-y-1/2 pointer-events-none"></div>
+                  <div className={`absolute top-0 right-0 w-[150px] h-[150px] ${
+                    invoice.status === 'Paid' ? 'bg-green-500/10' : 
+                    invoice.status === 'Pending' ? 'bg-yellow-500/10' : 'bg-red-500/10'
+                  } blur-[60px] rounded-full translate-x-1/2 -translate-y-1/2 pointer-events-none`}></div>
                   
                   <div className="flex justify-between items-center">
                     <span className="text-gray-400 text-sm font-medium">Payment Status</span>
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-yellow-500/10 text-yellow-500 text-xs font-bold border border-yellow-500/20 shadow-[0_0_15px_rgba(234,179,8,0.1)]">
-                      <span className="material-symbols-outlined text-[16px] animate-pulse">pending</span> Pending
+                    <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full ${
+                      invoice.status === 'Paid' ? 'bg-green-500/10 text-green-500 border border-green-500/20' : 
+                      invoice.status === 'Pending' ? 'bg-yellow-500/10 text-yellow-500 border border-yellow-500/20' : 
+                      'bg-red-500/10 text-red-500 border border-red-500/20'
+                    } text-xs font-bold shadow-[0_0_15px_rgba(234,179,8,0.1)]`}>
+                      <span className="material-symbols-outlined text-[16px] animate-pulse">
+                        {invoice.status === 'Paid' ? 'check_circle' : 
+                         invoice.status === 'Pending' ? 'pending' : 'error'}
+                      </span> 
+                      {invoice.status}
                     </span>
                   </div>
                   
                   <div className="flex flex-col gap-1">
                     <span className="text-xs text-gray-500 uppercase tracking-wider font-semibold">Balance Due</span>
                     <div className="flex items-baseline gap-1">
-                      <h2 className="text-5xl font-bold text-white tracking-tight">$750.00</h2>
+                      <h2 className="text-5xl font-bold text-white tracking-tight">${invoice.amount.toFixed(2)}</h2>
                       <span className="text-xl text-gray-500 font-medium">USDC</span>
                     </div>
                   </div>
                   
                   <div className="flex flex-col gap-3 mt-2">
-                    <button className="group w-full flex items-center justify-center gap-2 bg-primary hover:bg-green-500 text-white px-4 py-3.5 rounded-lg font-bold transition-all shadow-[0_0_20px_rgba(15,184,71,0.2)] hover:shadow-[0_0_30px_rgba(15,184,71,0.4)] hover:-translate-y-0.5">
-                      <span className="material-symbols-outlined group-hover:animate-bounce">send</span>
-                      Remind Client
-                    </button>
-                    <button className="w-full flex items-center justify-center gap-2 bg-white/5 hover:bg-white/10 text-white px-4 py-3.5 rounded-lg font-medium border border-white/10 transition-colors">
-                      <span className="material-symbols-outlined">check_circle</span>
-                      Mark as Paid
-                    </button>
+                    {invoice.status === 'Pending' ? (
+                      <>
+                        <button className="group w-full flex items-center justify-center gap-2 bg-primary hover:bg-green-500 text-white px-4 py-3.5 rounded-lg font-bold transition-all shadow-[0_0_20px_rgba(15,184,71,0.2)] hover:shadow-[0_0_30px_rgba(15,184,71,0.4)] hover:-translate-y-0.5">
+                          <span className="material-symbols-outlined group-hover:animate-bounce">send</span>
+                          Remind Client
+                        </button>
+                        <button className="w-full flex items-center justify-center gap-2 bg-white/5 hover:bg-white/10 text-white px-4 py-3.5 rounded-lg font-medium border border-white/10 transition-colors">
+                          <span className="material-symbols-outlined">check_circle</span>
+                          Mark as Paid
+                        </button>
+                      </>
+                    ) : invoice.status === 'Paid' ? (
+                      <button className="w-full flex items-center justify-center gap-2 bg-white/5 hover:bg-white/10 text-white px-4 py-3.5 rounded-lg font-medium border border-white/10 transition-colors">
+                        <span className="material-symbols-outlined">download</span>
+                        Download Receipt
+                      </button>
+                    ) : (
+                      <button className="group w-full flex items-center justify-center gap-2 bg-primary hover:bg-green-500 text-white px-4 py-3.5 rounded-lg font-bold transition-all shadow-[0_0_20px_rgba(15,184,71,0.2)] hover:shadow-[0_0_30px_rgba(15,184,71,0.4)] hover:-translate-y-0.5">
+                        <span className="material-symbols-outlined">autorenew</span>
+                        Resend Invoice
+                      </button>
+                    )}
                   </div>
                 </div>
               </div>
@@ -187,10 +356,10 @@ function InvoiceDetail() {
                 </div>
                 <div className="flex gap-2">
                   <div className="flex-1 bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-gray-400 text-sm truncate font-mono select-all">
-                    https://scroll.inv/pay/8x9s...
+                    https://scroll.inv/pay/{invoice.id.toLowerCase()}
                   </div>
                   <button 
-                    onClick={handleCopyLink}
+                    onClick={() => copyToClipboard(`https://scroll.inv/pay/${invoice.id.toLowerCase()}`)}
                     className="px-4 py-2 bg-white/5 hover:bg-white/10 text-white rounded-lg border border-white/10 transition-colors flex items-center justify-center"
                     title="Copy"
                   >
@@ -211,13 +380,28 @@ function InvoiceDetail() {
                   <div className="relative">
                     <div className="absolute -left-[21px] top-1 h-2.5 w-2.5 rounded-full bg-primary ring-4 ring-surface"></div>
                     <p className="text-sm text-gray-300">Invoice Created</p>
-                    <p className="text-xs text-gray-500 mt-0.5">Oct 24, 2024 • 10:23 AM</p>
+                    <p className="text-xs text-gray-500 mt-0.5">{invoice.date} • 10:23 AM</p>
                   </div>
-                  <div className="relative">
-                    <div className="absolute -left-[21px] top-1 h-2.5 w-2.5 rounded-full bg-white/20 ring-4 ring-surface"></div>
-                    <p className="text-sm text-gray-300">Sent to Client</p>
-                    <p className="text-xs text-gray-500 mt-0.5">Oct 24, 2024 • 10:25 AM</p>
-                  </div>
+                  {invoice.status === 'Paid' ? (
+                    <>
+                      <div className="relative">
+                        <div className="absolute -left-[21px] top-1 h-2.5 w-2.5 rounded-full bg-green-500 ring-4 ring-surface"></div>
+                        <p className="text-sm text-gray-300">Payment Received</p>
+                        <p className="text-xs text-gray-500 mt-0.5">{invoice.date} • 14:45 PM</p>
+                      </div>
+                      <div className="relative">
+                        <div className="absolute -left-[21px] top-1 h-2.5 w-2.5 rounded-full bg-green-500 ring-4 ring-surface"></div>
+                        <p className="text-sm text-gray-300">Settlement Complete</p>
+                        <p className="text-xs text-gray-500 mt-0.5">{invoice.date} • 14:46 PM</p>
+                      </div>
+                    </>
+                  ) : (
+                    <div className="relative">
+                      <div className="absolute -left-[21px] top-1 h-2.5 w-2.5 rounded-full bg-white/20 ring-4 ring-surface"></div>
+                      <p className="text-sm text-gray-300">Sent to Client</p>
+                      <p className="text-xs text-gray-500 mt-0.5">{invoice.date} • 10:25 AM</p>
+                    </div>
+                  )}
                 </div>
                 
                 {/* Security Badge */}

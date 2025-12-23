@@ -5,6 +5,12 @@ import { Link, useLocation } from 'react-router-dom';
 const Sidebar = () => {
   const location = useLocation();
   
+  const navItems = [
+    { path: '/dashboard', icon: 'dashboard', label: 'Dashboard' },
+    { path: '/invoices', icon: 'description', label: 'Invoices' },
+    { path: '/settings', icon: 'settings', label: 'Settings' },
+  ];
+  
   return (
     <aside className="w-72 bg-white dark:bg-background-dark border-r border-gray-200 dark:border-white/5 flex flex-col justify-between shrink-0 h-full relative z-20">
       <div className="flex flex-col gap-8 p-6">
@@ -12,31 +18,37 @@ const Sidebar = () => {
         <div className="flex flex-col gap-1">
           <div className="flex items-center gap-2">
             <span className="material-symbols-outlined text-primary" style={{ fontSize: '28px' }}>bolt</span>
-            <h1 className="text-xl font-bold tracking-tight">ScrollInvoice</h1>
+            <h1 className="text-xl font-bold tracking-tight">Settle</h1>
           </div>
-          <p className="text-gray-500 dark:text-gray-400 text-xs font-medium pl-9">Gasless Payments</p>
+          <p className="text-gray-500 dark:text-gray-400 text-xs font-medium pl-9">Settle Payments</p>
         </div>
         
         {/* Navigation */}
         <nav className="flex flex-col gap-2">
-          <Link 
-            to="/dashboard" 
-            className={`flex items-center gap-3 px-4 py-3 rounded-lg ${location.pathname === '/dashboard' ? 'bg-primary/10 text-primary border border-primary/20' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/5'} transition-colors`}
-          >
-            <span className="material-symbols-outlined" style={{ fontVariationSettings: location.pathname === '/dashboard' ? "'FILL' 1" : "'FILL' 0" }}>dashboard</span>
-            <span className={`text-sm ${location.pathname === '/dashboard' ? 'font-semibold' : 'font-medium'}`}>Dashboard</span>
-          </Link>
-          <Link 
-            to="/invoices" 
-            className={`flex items-center gap-3 px-4 py-3 rounded-lg ${location.pathname.includes('/invoices') ? 'bg-primary/10 text-primary border border-primary/20' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/5'} transition-colors`}
-          >
-            <span className="material-symbols-outlined" style={{ fontVariationSettings: location.pathname.includes('/invoices') ? "'FILL' 1" : "'FILL' 0" }}>description</span>
-            <span className={`text-sm ${location.pathname.includes('/invoices') ? 'font-semibold' : 'font-medium'}`}>Invoices</span>
-          </Link>
-          <a className="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/5 transition-colors" href="#">
-            <span className="material-symbols-outlined">settings</span>
-            <span className="text-sm font-medium">Settings</span>
-          </a>
+          {navItems.map((item) => {
+            const isActive = location.pathname === item.path;
+            return (
+              <Link
+                key={item.path}
+                to={item.path}
+                className={`flex items-center gap-3 px-4 py-3 rounded-lg ${
+                  isActive 
+                    ? 'bg-primary/10 text-primary border border-primary/20' 
+                    : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/5'
+                } transition-colors`}
+              >
+                <span 
+                  className="material-symbols-outlined" 
+                  style={{ fontVariationSettings: isActive ? "'FILL' 1" : "'FILL' 0" }}
+                >
+                  {item.icon}
+                </span>
+                <span className={`text-sm ${isActive ? 'font-semibold' : 'font-medium'}`}>
+                  {item.label}
+                </span>
+              </Link>
+            );
+          })}
         </nav>
       </div>
       
