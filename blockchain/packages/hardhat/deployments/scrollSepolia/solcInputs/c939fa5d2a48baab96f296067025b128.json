@@ -1,0 +1,37 @@
+{
+  "language": "Solidity",
+  "sources": {
+    "contracts/SettlePaymaster.sol": {
+      "content": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.12;\n\n// 1. Define the Struct exactly as the EntryPoint expects it\nstruct UserOperation {\n    address sender;\n    uint256 nonce;\n    bytes initCode;\n    bytes callData;\n    uint256 callGasLimit;\n    uint256 verificationGasLimit;\n    uint256 preVerificationGas;\n    uint256 maxFeePerGas;\n    uint256 maxPriorityFeePerGas;\n    bytes paymasterAndData;\n    bytes signature;\n}\n\n// 2. Define the Interface\ninterface IPaymaster {\n    function validatePaymasterUserOp(UserOperation calldata userOp, bytes32 userOpHash, uint256 maxCost)\n    external returns (bytes memory context, uint256 validationData);\n\n    function postOp(uint8 mode, bytes calldata context, uint256 actualGasCost) external;\n}\n\n// 3. The Contract\ncontract SettlePaymaster is IPaymaster {\n    address public immutable entryPoint;\n    address public owner;\n\n    // Simple modifier to replace OpenZeppelin's Ownable\n    modifier onlyOwner() {\n        require(msg.sender == owner, \"Not owner\");\n        _;\n    }\n\n    constructor(address _entryPoint) {\n        entryPoint = _entryPoint;\n        owner = msg.sender; // Set the deployer as owner\n    }\n\n    function validatePaymasterUserOp(\n        UserOperation calldata userOp,\n        bytes32 /*userOpHash*/,\n        uint256 /*maxCost*/\n    ) external pure override returns (bytes memory context, uint256 validationData) {\n        // We hush the unused variable warning\n        userOp;\n        // Return 0 to indicate success (Sponsoring the transaction)\n        return (\"\", 0);\n    }\n\n    function postOp(uint8 mode, bytes calldata context, uint256 actualGasCost) external pure override {\n        // Simple logic to satisfy the interface\n        (mode, context, actualGasCost);\n    }\n\n    function withdrawTo(address payable withdrawAddress, uint256 amount) external onlyOwner {\n        // This calls the EntryPoint to get your deposited ETH back\n        (bool success,) = entryPoint.call(\n            abi.encodeWithSignature(\"withdrawTo(address,uint256)\", withdrawAddress, amount)\n        );\n        require(success, \"Withdraw failed\");\n    }\n\n    // Allow the contract to receive ETH (for the gas tank)\n \n    receive() external payable {}\n}"
+    }
+  },
+  "settings": {
+    "optimizer": {
+      "enabled": true,
+      "runs": 200
+    },
+    "viaIR": true,
+    "evmVersion": "paris",
+    "outputSelection": {
+      "*": {
+        "*": [
+          "abi",
+          "evm.bytecode",
+          "evm.deployedBytecode",
+          "evm.methodIdentifiers",
+          "metadata",
+          "devdoc",
+          "userdoc",
+          "storageLayout",
+          "evm.gasEstimates"
+        ],
+        "": [
+          "ast"
+        ]
+      }
+    },
+    "metadata": {
+      "useLiteralContent": true
+    }
+  }
+}

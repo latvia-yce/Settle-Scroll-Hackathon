@@ -15272,6 +15272,7 @@ __metadata:
   resolution: "se-2@workspace:."
   dependencies:
     "@nomicfoundation/hardhat-toolbox": ^6.1.0
+    hardhat-deploy: ^1.0.4
     husky: ~9.1.6
     lint-staged: ~13.2.2
   languageName: unknown

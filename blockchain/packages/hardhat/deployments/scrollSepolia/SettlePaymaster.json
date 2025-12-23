@@ -1,0 +1,231 @@
+{
+  "address": "0x667299d7aB32C9f64d6d5612a463cB46d00D1522",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_entryPoint",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "inputs": [],
+      "name": "entryPoint",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "owner",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint8",
+          "name": "mode",
+          "type": "uint8"
+        },
+        {
+          "internalType": "bytes",
+          "name": "context",
+          "type": "bytes"
+        },
+        {
+          "internalType": "uint256",
+          "name": "actualGasCost",
+          "type": "uint256"
+        }
+      ],
+      "name": "postOp",
+      "outputs": [],
+      "stateMutability": "pure",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "internalType": "address",
+              "name": "sender",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "nonce",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bytes",
+              "name": "initCode",
+              "type": "bytes"
+            },
+            {
+              "internalType": "bytes",
+              "name": "callData",
+              "type": "bytes"
+            },
+            {
+              "internalType": "uint256",
+              "name": "callGasLimit",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "verificationGasLimit",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "preVerificationGas",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "maxFeePerGas",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "maxPriorityFeePerGas",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bytes",
+              "name": "paymasterAndData",
+              "type": "bytes"
+            },
+            {
+              "internalType": "bytes",
+              "name": "signature",
+              "type": "bytes"
+            }
+          ],
+          "internalType": "struct UserOperation",
+          "name": "userOp",
+          "type": "tuple"
+        },
+        {
+          "internalType": "bytes32",
+          "name": "",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "validatePaymasterUserOp",
+      "outputs": [
+        {
+          "internalType": "bytes",
+          "name": "context",
+          "type": "bytes"
+        },
+        {
+          "internalType": "uint256",
+          "name": "validationData",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "pure",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address payable",
+          "name": "withdrawAddress",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "withdrawTo",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "stateMutability": "payable",
+      "type": "receive"
+    }
+  ],
+  "transactionHash": "0xb2794d9da6037918867a9a2f87cd1551b219866b872f8f343f860ef2c8ae922b",
+  "receipt": {
+    "to": null,
+    "from": "0x4e8da9B65E450461504ba43ABe2438533d711f74",
+    "contractAddress": "0x667299d7aB32C9f64d6d5612a463cB46d00D1522",
+    "transactionIndex": 0,
+    "gasUsed": "266572",
+    "logsBloom": "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+    "blockHash": "0xe26fcb49f153230c59d9935cf23a325d1594e714d216aa77464325f594207ece",
+    "transactionHash": "0xb2794d9da6037918867a9a2f87cd1551b219866b872f8f343f860ef2c8ae922b",
+    "logs": [],
+    "blockNumber": 15681685,
+    "cumulativeGasUsed": "266572",
+    "status": 1,
+    "byzantium": true
+  },
+  "args": [
+    "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789"
+  ],
+  "numDeployments": 1,
+  "solcInputHash": "c939fa5d2a48baab96f296067025b128",
+  "metadata": "{\"compiler\":{\"version\":\"0.8.28+commit.7893614a\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_entryPoint\",\"type\":\"address\"}],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"inputs\":[],\"name\":\"entryPoint\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"owner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint8\",\"name\":\"mode\",\"type\":\"uint8\"},{\"internalType\":\"bytes\",\"name\":\"context\",\"type\":\"bytes\"},{\"internalType\":\"uint256\",\"name\":\"actualGasCost\",\"type\":\"uint256\"}],\"name\":\"postOp\",\"outputs\":[],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"components\":[{\"internalType\":\"address\",\"name\":\"sender\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"nonce\",\"type\":\"uint256\"},{\"internalType\":\"bytes\",\"name\":\"initCode\",\"type\":\"bytes\"},{\"internalType\":\"bytes\",\"name\":\"callData\",\"type\":\"bytes\"},{\"internalType\":\"uint256\",\"name\":\"callGasLimit\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"verificationGasLimit\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"preVerificationGas\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"maxFeePerGas\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"maxPriorityFeePerGas\",\"type\":\"uint256\"},{\"internalType\":\"bytes\",\"name\":\"paymasterAndData\",\"type\":\"bytes\"},{\"internalType\":\"bytes\",\"name\":\"signature\",\"type\":\"bytes\"}],\"internalType\":\"struct UserOperation\",\"name\":\"userOp\",\"type\":\"tuple\"},{\"internalType\":\"bytes32\",\"name\":\"\",\"type\":\"bytes32\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"validatePaymasterUserOp\",\"outputs\":[{\"internalType\":\"bytes\",\"name\":\"context\",\"type\":\"bytes\"},{\"internalType\":\"uint256\",\"name\":\"validationData\",\"type\":\"uint256\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address payable\",\"name\":\"withdrawAddress\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"withdrawTo\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"stateMutability\":\"payable\",\"type\":\"receive\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"contracts/SettlePaymaster.sol\":\"SettlePaymaster\"},\"evmVersion\":\"paris\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\",\"useLiteralContent\":true},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[],\"viaIR\":true},\"sources\":{\"contracts/SettlePaymaster.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\npragma solidity ^0.8.12;\\n\\n// 1. Define the Struct exactly as the EntryPoint expects it\\nstruct UserOperation {\\n    address sender;\\n    uint256 nonce;\\n    bytes initCode;\\n    bytes callData;\\n    uint256 callGasLimit;\\n    uint256 verificationGasLimit;\\n    uint256 preVerificationGas;\\n    uint256 maxFeePerGas;\\n    uint256 maxPriorityFeePerGas;\\n    bytes paymasterAndData;\\n    bytes signature;\\n}\\n\\n// 2. Define the Interface\\ninterface IPaymaster {\\n    function validatePaymasterUserOp(UserOperation calldata userOp, bytes32 userOpHash, uint256 maxCost)\\n    external returns (bytes memory context, uint256 validationData);\\n\\n    function postOp(uint8 mode, bytes calldata context, uint256 actualGasCost) external;\\n}\\n\\n// 3. The Contract\\ncontract SettlePaymaster is IPaymaster {\\n    address public immutable entryPoint;\\n    address public owner;\\n\\n    // Simple modifier to replace OpenZeppelin's Ownable\\n    modifier onlyOwner() {\\n        require(msg.sender == owner, \\\"Not owner\\\");\\n        _;\\n    }\\n\\n    constructor(address _entryPoint) {\\n        entryPoint = _entryPoint;\\n        owner = msg.sender; // Set the deployer as owner\\n    }\\n\\n    function validatePaymasterUserOp(\\n        UserOperation calldata userOp,\\n        bytes32 /*userOpHash*/,\\n        uint256 /*maxCost*/\\n    ) external pure override returns (bytes memory context, uint256 validationData) {\\n        // We hush the unused variable warning\\n        userOp;\\n        // Return 0 to indicate success (Sponsoring the transaction)\\n        return (\\\"\\\", 0);\\n    }\\n\\n    function postOp(uint8 mode, bytes calldata context, uint256 actualGasCost) external pure override {\\n        // Simple logic to satisfy the interface\\n        (mode, context, actualGasCost);\\n    }\\n\\n    function withdrawTo(address payable withdrawAddress, uint256 amount) external onlyOwner {\\n        // This calls the EntryPoint to get your deposited ETH back\\n        (bool success,) = entryPoint.call(\\n            abi.encodeWithSignature(\\\"withdrawTo(address,uint256)\\\", withdrawAddress, amount)\\n        );\\n        require(success, \\\"Withdraw failed\\\");\\n    }\\n\\n    // Allow the contract to receive ETH (for the gas tank)\\n \\n    receive() external payable {}\\n}\",\"keccak256\":\"0xf170b06b43f76f95618233202d023ffcefa87417ee4060526deab394ef78c21a\",\"license\":\"MIT\"}},\"version\":1}",
+  "bytecode": "0x60a034607f57601f61040838819003918201601f19168301916001600160401b03831184841017608457808492602094604052833981010312607f57516001600160a01b0381168103607f57608052600080546001600160a01b0319163317905560405161036d908161009b823960805181818161011101526102340152f35b600080fd5b634e487b7160e01b600052604160045260246000fdfe608080604052600436101561001d575b50361561001b57600080fd5b005b60003560e01c908163205c2878146101c4575080638da5cb5b1461019b578063a9a2340914610140578063b0d691fe146100fb5763f465c77e14610061573861000f565b346100f65760603660031901126100f65760043567ffffffffffffffff81116100f6576101609060031990360301126100f65760206040516100a38282610315565b60008152604051906040825280519081604084015260005b8281106100e257836060818560008981858486010152830152601f80199101168101030190f35b8181018501518482016060015284016100bb565b600080fd5b346100f65760003660031901126100f6576040517f00000000000000000000000000000000000000000000000000000000000000006001600160a01b03168152602090f35b346100f65760603660031901126100f65760043560ff8116036100f65760243567ffffffffffffffff81116100f657366023820112156100f657806004013567ffffffffffffffff81116100f657369101602401116100f657005b346100f65760003660031901126100f6576000546040516001600160a01b039091168152602090f35b346100f65760403660031901126100f6576004356001600160a01b03811691908290036100f6576000546001600160a01b031633036102e75760008083604051602081019163040b850f60e31b8352602482015260243560448201526044815261022f606482610315565b5190827f00000000000000000000000000000000000000000000000000000000000000005af13d156102e2573d67ffffffffffffffff81116102cc5760405190610283601f8201601f191660200183610315565b8152600060203d92013e5b1561029557005b60405162461bcd60e51b815260206004820152600f60248201526e15da5d1a191c985dc819985a5b1959608a1b6044820152606490fd5b634e487b7160e01b600052604160045260246000fd5b61028e565b62461bcd60e51b81526020600482015260096024820152682737ba1037bbb732b960b91b6044820152606490fd5b90601f8019910116810190811067ffffffffffffffff8211176102cc5760405256fea2646970667358221220b76601785f15888bc57d2d42af56b415a8c780120fb4c2e4617c1602a63716f364736f6c634300081c0033",
+  "deployedBytecode": "0x608080604052600436101561001d575b50361561001b57600080fd5b005b60003560e01c908163205c2878146101c4575080638da5cb5b1461019b578063a9a2340914610140578063b0d691fe146100fb5763f465c77e14610061573861000f565b346100f65760603660031901126100f65760043567ffffffffffffffff81116100f6576101609060031990360301126100f65760206040516100a38282610315565b60008152604051906040825280519081604084015260005b8281106100e257836060818560008981858486010152830152601f80199101168101030190f35b8181018501518482016060015284016100bb565b600080fd5b346100f65760003660031901126100f6576040517f00000000000000000000000000000000000000000000000000000000000000006001600160a01b03168152602090f35b346100f65760603660031901126100f65760043560ff8116036100f65760243567ffffffffffffffff81116100f657366023820112156100f657806004013567ffffffffffffffff81116100f657369101602401116100f657005b346100f65760003660031901126100f6576000546040516001600160a01b039091168152602090f35b346100f65760403660031901126100f6576004356001600160a01b03811691908290036100f6576000546001600160a01b031633036102e75760008083604051602081019163040b850f60e31b8352602482015260243560448201526044815261022f606482610315565b5190827f00000000000000000000000000000000000000000000000000000000000000005af13d156102e2573d67ffffffffffffffff81116102cc5760405190610283601f8201601f191660200183610315565b8152600060203d92013e5b1561029557005b60405162461bcd60e51b815260206004820152600f60248201526e15da5d1a191c985dc819985a5b1959608a1b6044820152606490fd5b634e487b7160e01b600052604160045260246000fd5b61028e565b62461bcd60e51b81526020600482015260096024820152682737ba1037bbb732b960b91b6044820152606490fd5b90601f8019910116810190811067ffffffffffffffff8211176102cc5760405256fea2646970667358221220b76601785f15888bc57d2d42af56b415a8c780120fb4c2e4617c1602a63716f364736f6c634300081c0033",
+  "devdoc": {
+    "kind": "dev",
+    "methods": {},
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {},
+    "version": 1
+  },
+  "storageLayout": {
+    "storage": [
+      {
+        "astId": 54,
+        "contract": "contracts/SettlePaymaster.sol:SettlePaymaster",
+        "label": "owner",
+        "offset": 0,
+        "slot": "0",
+        "type": "t_address"
+      }
+    ],
+    "types": {
+      "t_address": {
+        "encoding": "inplace",
+        "label": "address",
+        "numberOfBytes": "20"
+      }
+    }
+  }
+}

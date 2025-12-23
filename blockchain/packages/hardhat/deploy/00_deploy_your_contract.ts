@@ -1,51 +1,52 @@
 import { HardhatRuntimeEnvironment } from "hardhat/types";
-import { DeployFunction } from "hardhat-deploy/types";
+import { ethers } from "ethers";
 
-const deployContracts: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
-  const { deployer } = await hre.getNamedAccounts();
-  const { deploy } = hre.deployments;
+const deployContracts = async function (hre: HardhatRuntimeEnvironment) {
+  const { deployer } = await (hre as any).getNamedAccounts();
+  const { deploy } = (hre as any).deployments;
 
-  console.log("Deploying contracts with account:", deployer);
+  console.log("🚀 Deploying full Settle Suite with account:", deployer);
 
   // 1. Deploy MockUSDC
-  const mockUSDC = await deploy("MockUSDC", {
-    from: deployer,
-    args: [],
-    log: true,
-    autoMine: true,
-  });
-
-  console.log("MockUSDC deployed to:", mockUSDC.address);
+  const mockUSDC = await deploy("MockUSDC", { from: deployer, args: [], log: true });
 
   // 2. Deploy InvoiceFactory
-  const invoiceFactory = await deploy("InvoiceFactory", {
+  const invoiceFactory = await deploy("InvoiceFactory", { from: deployer, args: [deployer], log: true });
+
+  // 3. Deploy SettlePaymaster
+  const ENTRY_POINT_ADDRESS = "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789";
+  const paymaster = await deploy("SettlePaymaster", {
     from: deployer,
-    args: [deployer], // feeCollector = deployer
+    args: [ENTRY_POINT_ADDRESS],
     log: true,
-    autoMine: true,
   });
 
-  console.log("InvoiceFactory deployed to:", invoiceFactory.address);
+  console.log("\n🔗 Linking and Funding...");
 
-  // 3. Export contract addresses
-  const contracts = {
-    MockUSDC: mockUSDC.address,
-    InvoiceFactory: invoiceFactory.address,
-    // We'll use third-party paymaster (Pimlico/Stackup)
-    Paymaster: "0x0000000000000000000000000000000000000000", // Placeholder
-  };
+  // 4. FUND THE PAYMASTER (Simplified approach)
+  // We manually define the ABI for just the depositTo function to ensure no mismatch
+  const entryPointAbi = ["function depositTo(address account) public payable"];
+  const signer = await hre.ethers.getSigner(deployer);
+  const entryPoint = new hre.ethers.Contract(ENTRY_POINT_ADDRESS, entryPointAbi, signer);
 
-  console.log("\n✅ Contracts deployed successfully!");
-  console.log("Contract addresses:", JSON.stringify(contracts, null, 2));
+  console.log("⛽ Depositing 0.02 ETH into EntryPoint...");
   
-  // Save to a file for frontend
-  const fs = require("fs");
-  fs.writeFileSync(
-    "deployed-contracts.json",
-    JSON.stringify(contracts, null, 2)
-  );
+  try {
+    const fundTx = await entryPoint.depositTo(paymaster.address, {
+      value: hre.ethers.parseEther("0.02"),
+      // Adding a manual gas limit helps bypass the 'unpredictable gas limit' error
+      gasLimit: 100000 
+    });
+    await fundTx.wait();
+    console.log("✅ Gas tank filled!");
+  } catch (error) {
+    console.log("⚠️ Funding failed, but contracts are deployed. You can fund manually later.");
+    console.error(error);
+  }
+
+  console.log("\n✅ ALL CONTRACTS DEPLOYED!");
+  console.log(`Paymaster Address: ${paymaster.address}`);
 };
 
 export default deployContracts;
-
-deployContracts.tags = ["InvoiceFactory", "MockUSDC"];
+deployContracts.tags = ["SettleFull"];

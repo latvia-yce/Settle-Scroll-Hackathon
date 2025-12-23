@@ -1,35 +1,70 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.28;
+pragma solidity ^0.8.12;
 
-// Simplified Paymaster - we'll use a third-party paymaster for hackathon
-contract SettlePaymaster {
+// 1. Define the Struct exactly as the EntryPoint expects it
+struct UserOperation {
+    address sender;
+    uint256 nonce;
+    bytes initCode;
+    bytes callData;
+    uint256 callGasLimit;
+    uint256 verificationGasLimit;
+    uint256 preVerificationGas;
+    uint256 maxFeePerGas;
+    uint256 maxPriorityFeePerGas;
+    bytes paymasterAndData;
+    bytes signature;
+}
+
+// 2. Define the Interface
+interface IPaymaster {
+    function validatePaymasterUserOp(UserOperation calldata userOp, bytes32 userOpHash, uint256 maxCost)
+    external returns (bytes memory context, uint256 validationData);
+
+    function postOp(uint8 mode, bytes calldata context, uint256 actualGasCost) external;
+}
+
+// 3. The Contract
+contract SettlePaymaster is IPaymaster {
+    address public immutable entryPoint;
     address public owner;
-    mapping(address => bool) public whitelistedContracts;
-    
-    event ContractWhitelisted(address indexed contractAddress, bool whitelisted);
-    
-    constructor() {
-        owner = msg.sender;
-    }
-    
+
+    // Simple modifier to replace OpenZeppelin's Ownable
     modifier onlyOwner() {
         require(msg.sender == owner, "Not owner");
         _;
     }
-    
-    function whitelistContract(address _contract, bool _whitelist) external onlyOwner {
-        whitelistedContracts[_contract] = _whitelist;
-        emit ContractWhitelisted(_contract, _whitelist);
+
+    constructor(address _entryPoint) {
+        entryPoint = _entryPoint;
+        owner = msg.sender; // Set the deployer as owner
     }
-    
-    // This is a placeholder - in reality you'd use Pimlico/Stackup paymaster
+
     function validatePaymasterUserOp(
-        bytes calldata userOp,
-        bytes32 userOpHash,
-        uint256 maxCost
-    ) external pure returns (bytes memory context, uint256 deadline) {
-        // For hackathon, we'll use third-party paymaster
-        // This just returns success
+        UserOperation calldata userOp,
+        bytes32 /*userOpHash*/,
+        uint256 /*maxCost*/
+    ) external pure override returns (bytes memory context, uint256 validationData) {
+        // We hush the unused variable warning
+        userOp;
+        // Return 0 to indicate success (Sponsoring the transaction)
         return ("", 0);
     }
+
+    function postOp(uint8 mode, bytes calldata context, uint256 actualGasCost) external pure override {
+        // Simple logic to satisfy the interface
+        (mode, context, actualGasCost);
+    }
+
+    function withdrawTo(address payable withdrawAddress, uint256 amount) external onlyOwner {
+        // This calls the EntryPoint to get your deposited ETH back
+        (bool success,) = entryPoint.call(
+            abi.encodeWithSignature("withdrawTo(address,uint256)", withdrawAddress, amount)
+        );
+        require(success, "Withdraw failed");
+    }
+
+    // Allow the contract to receive ETH (for the gas tank)
+ 
+    receive() external payable {}
 }
