@@ -9,6 +9,12 @@ function CreateInvoice() {
   const { createInvoice, loading: invoiceLoading } = useInvoice();
   const { createInvoiceGasless, canPerformGaslessTx } = useAccountAbstraction();
 
+  // Format address for display
+  const formatAddress = (address) => {
+    if (!address) return 'Not Connected';
+    return `${address.slice(0, 6)}...${address.slice(-4)}`;
+  };
+
   const [clientName, setClientName] = useState('');
   const [clientAddress, setClientAddress] = useState('');
   const [amount, setAmount] = useState('');
@@ -78,7 +84,7 @@ function CreateInvoice() {
             </div>
             <button className="flex items-center gap-3 px-4 py-2 rounded-lg bg-[#111] border border-[#333] hover:bg-[#1a1a1a] transition-colors cursor-pointer group">
               <div className="size-2 rounded-full bg-[#0fb847] shadow-[0_0_8px_#0fb847]"></div>
-              <span className="text-sm font-medium text-gray-300 group-hover:text-white">0x71C...9A23</span>
+              <span className="text-sm font-medium text-gray-300 group-hover:text-white">{formatAddress(account)}</span>
             </button>
           </div>
         </header>
@@ -173,7 +179,7 @@ function CreateInvoice() {
                       className="w-full bg-[#050505] border border-[#222] rounded-lg pl-10 pr-4 py-3 text-gray-500 font-mono text-sm cursor-not-allowed focus:outline-none select-none" 
                       readOnly 
                       type="text" 
-                      value="0x71C7656EC7ab88b098defB751B7401B5f6d89A23"
+                      value={account || 'Connect wallet to see your address'}
                     />
                     <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
                       <span className="text-xs text-[#333] font-medium border border-[#222] px-1.5 py-0.5 rounded">READ ONLY</span>

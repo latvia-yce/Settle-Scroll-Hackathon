@@ -1,4 +1,4 @@
-// components/layout/DashboardLayout.jsx
+// components/Layout/DashboardLayout.jsx
 import React from 'react';
 import Sidebar from './Sidebar';
 

@@ -1,35 +1,54 @@
-# Fix CreateInvoice Wallet Integration
+# Mobile Responsiveness Plan for Landing Page
 
-## Problem Analysis
-The CreateInvoice page currently uses hardcoded wallet addresses instead of the actual connected wallet from Web3Context:
-1. Header shows hardcoded "0x71C...9A23" instead of actual connected account
-2. Receiving Wallet field shows hardcoded "0x71C7656EC7ab88b098defB751B7401B5f6d89A23" instead of actual account
-3. This prevents proper invoice creation with the real user's wallet
+## Analysis of Current Issues
 
-## Plan
-1. **Update CreateInvoice.jsx to use actual wallet address**:
-   - Import useWeb3Context hook
-   - Replace hardcoded wallet addresses with actual account from context
-   - Format the account address properly for display
-   - Ensure the receiving wallet shows the connected user's address
+After analyzing the Landing.jsx file, I identified several mobile responsiveness issues:
 
-2. **Verify wallet integration**:
-   - Check that the header displays the correct connected account
-   - Ensure the receiving wallet field shows the user's actual address
-   - Test that invoice creation uses the real wallet
+### 1. Header/Navigation Issues
+- Mobile menu button exists but lacks functionality
+- Navigation links are hidden on mobile (`hidden md:flex`)
+- Header padding and sizing may not be optimal for mobile
 
-## Files to Edit
-- `/Users/koded/Desktop/Code/Settle-Scroll-Hackathon/frontend/src/pages/CreateInvoice.jsx`
+### 2. Hero Section Issues
+- Typography scaling needs improvement for smaller screens
+- Grid layout `grid lg:grid-cols-2` works but could be optimized
+- Demo card aspect ratio might not work well on small screens
+- Button layouts may stack poorly on mobile
 
-## Implementation Steps
-1. Read current CreateInvoice.jsx to understand exact structure
-2. Update the component to use useWeb3Context
-3. Replace hardcoded addresses with actual account values
-4. Add proper address formatting functions
-5. Test the changes
+### 3. Content Sections
+- Features grid is responsive but could be improved
+- CTA section text sizing needs mobile optimization
+- Footer layout could be better for mobile
+
+### 4. Modal Issues
+- Connect wallet modal sizing for mobile devices
+
+## Planned Improvements
+
+### Phase 1: Header & Navigation
+- [ ] Add functional mobile menu with slide-out panel
+- [ ] Improve header padding and sizing for mobile
+- [ ] Optimize logo and brand positioning
+
+### Phase 2: Hero Section Mobile Optimization
+- [ ] Improve typography scaling (text sizes, line height)
+- [ ] Optimize grid layout for mobile stacking
+- [ ] Adjust demo card sizing and positioning
+- [ ] Improve button layouts and spacing
+
+### Phase 3: Content Sections Enhancement
+- [ ] Optimize features grid for mobile
+- [ ] Improve CTA section mobile layout
+- [ ] Enhance footer mobile experience
+
+### Phase 4: Modal & Interactive Elements
+- [ ] Optimize connect wallet modal for mobile
+- [ ] Test all interactive elements on mobile
+
+### Phase 5: Testing & Refinement
+- [ ] Test responsive breakpoints
+- [ ] Verify touch interactions
+- [ ] Performance optimization
 
 ## Expected Outcome
-- Header shows real connected wallet address
-- Receiving wallet field displays actual user's address
-- Invoice creation works with the real wallet
-- Better user experience with accurate wallet information
+A fully responsive landing page that provides excellent user experience across all mobile devices while maintaining the current design aesthetic and functionality.
