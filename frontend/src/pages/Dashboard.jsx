@@ -1,6 +1,6 @@
 // pages/Dashboard.jsx
 import React from 'react';
-import DashboardLayout from '../components/Layout/DashboardLayout';
+import DashboardLayout from '../components/Layouting/DashboardLayout';
 import DashboardHeader from '../components/dashboard/DashboardHeader';
 import BalanceCards from '../components/dashboard/BalanceCards';
 import RecentActivity from '../components/dashboard/RecentActivity';

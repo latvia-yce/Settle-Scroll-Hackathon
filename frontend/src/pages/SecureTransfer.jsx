@@ -36,7 +36,7 @@ const handleConfirmTransaction = () => {
           <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-primary/5 rounded-full blur-[120px]"></div>
         </div>
 
-        {/* Layout Container */}
+        {/* Layouting Container */}
         <div className="relative w-full max-w-[1200px] px-4 py-8 flex flex-col md:flex-row gap-8 items-start justify-center grow">
           {/* Main Transaction Card */}
           <main className="w-full max-w-[520px] mx-auto flex flex-col gap-6 z-10">

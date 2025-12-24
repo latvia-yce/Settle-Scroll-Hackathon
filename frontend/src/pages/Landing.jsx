@@ -14,9 +14,9 @@ function Landing() {
         <div className="relative flex h-auto min-h-screen w-full flex-col overflow-x-hidden">
           {/* Header */}
           <header className="sticky top-0 z-50 w-full border-b border-white/5 bg-background-dark/80 backdrop-blur-md">
-            <div className="layout-container flex h-full grow flex-col">
+            <div className="Layouting-container flex h-full grow flex-col">
               <div className="w-full flex justify-center">
-                <div className="layout-content-container flex w-full max-w-[1280px] items-center justify-between px-4 py-4 md:px-10">
+                <div className="Layouting-content-container flex w-full max-w-[1280px] items-center justify-between px-4 py-4 md:px-10">
                   <div className="flex items-center gap-3">
                     <div className="flex size-8 items-center justify-center rounded-lg bg-primary/20 text-primary">
                       <span className="material-symbols-outlined" style={{ fontSize: '24px' }}>bolt</span>
@@ -142,8 +142,8 @@ function Landing() {
 
           {/* Features Section */}
           <section className="relative w-full bg-background-dark py-20">
-            <div className="layout-container flex justify-center">
-              <div className="layout-content-container flex w-full max-w-[1280px] flex-col gap-16 px-4 md:px-10">
+            <div className="Layouting-container flex justify-center">
+              <div className="Layouting-content-container flex w-full max-w-[1280px] flex-col gap-16 px-4 md:px-10">
                 <div className="flex flex-col gap-4 text-center md:text-left">
                   <h2 className="text-3xl font-bold leading-tight tracking-tight text-white md:text-5xl md:max-w-2xl">
                     Why choose <span className="text-primary">Gasless</span>?
@@ -194,8 +194,8 @@ function Landing() {
           {/* CTA Section */}
           <section className="relative w-full py-24 px-4 overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-t from-primary/5 to-transparent pointer-events-none"></div>
-            <div className="layout-container flex justify-center relative z-10">
-              <div className="layout-content-container flex w-full max-w-[960px] flex-col items-center gap-8 rounded-3xl border border-white/10 bg-[#0a0f0c] p-10 text-center md:p-20 shadow-2xl shadow-primary/5">
+            <div className="Layouting-container flex justify-center relative z-10">
+              <div className="Layouting-content-container flex w-full max-w-[960px] flex-col items-center gap-8 rounded-3xl border border-white/10 bg-[#0a0f0c] p-10 text-center md:p-20 shadow-2xl shadow-primary/5">
                 <div className="flex flex-col gap-4 items-center">
                   <div className="inline-flex items-center justify-center rounded-full bg-primary/10 p-3 mb-2">
                     <span className="material-symbols-outlined text-primary" style={{ fontSize: '32px' }}>rocket_launch</span>
@@ -221,8 +221,8 @@ function Landing() {
 
           {/* Footer */}
           <footer className="w-full border-t border-white/5 bg-background-dark py-12">
-            <div className="layout-container flex justify-center px-4">
-              <div className="layout-content-container flex w-full max-w-[1280px] flex-col gap-8 md:flex-row md:justify-between md:items-center">
+            <div className="Layouting-container flex justify-center px-4">
+              <div className="Layouting-content-container flex w-full max-w-[1280px] flex-col gap-8 md:flex-row md:justify-between md:items-center">
                 <div className="flex flex-col gap-4">
                   <div className="flex items-center gap-2 text-white">
                     <span className="material-symbols-outlined text-primary">bolt</span>

@@ -1,4 +1,4 @@
-// components/Layout/Sidebar.jsx
+// components/Layouting/Sidebar.jsx
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 

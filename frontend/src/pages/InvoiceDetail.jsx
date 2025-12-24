@@ -1,7 +1,7 @@
 // pages/InvoiceDetail.jsx
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import DashboardLayout from '../components/Layout/DashboardLayout';
+import DashboardLayout from '../components/Layouting/DashboardLayout';
 import { useWeb3Context } from '../contexts/Web3Context';
 import { useInvoice } from '../hooks/useWeb3';
 import { useAccountAbstraction } from '../hooks/useAccountAbstraction';
